@@ -111,7 +111,3 @@ Before treating this as production-ready, review these points:
 - [Species data and gene pools](docs/SPECIES.md)
 - [Breeding and inheritance](docs/BREEDING.md)
 - [API reference](docs/API_REFERENCE.md)
-
-## License
-
-No license information was present in the supplied archive. Add a `LICENSE` file if this project is intended for distribution.
