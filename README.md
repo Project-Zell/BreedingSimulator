@@ -72,38 +72,6 @@ At a high level, a caller would:
 
 The supplied archive does not yet contain a complete end-to-end loader/setup path, so steps 1 and 2 require implementation before this workflow can run from external data.
 
-## Important implementation gaps
-
-The following members are placeholders in the supplied archive:
-
-- `EyeColor.LoadGenes(string json)` has an empty body.
-- `SpeciesCollection.SpeciesCollection(string json)` has an empty body.
-- `SpeciesData.SpeciesData(string json)` has an empty body.
-- `SpeciesData`'s gene-pool dictionary is private and is not populated by the code currently supplied.
-- The archive does not contain the JSON definition files under `Assets/StreamingAssets`.
-- The archive does not contain the `GeneCollection` class discussed in the accompanying conversation.
-
-As a result, the data-loading pipeline and species initialization are not complete in this snapshot. In particular, `Breed.GetOffspring` depends on populated `SpeciesData` gene pools and valid parent gene assignments.
-
-## Important code-review notes
-
-Before treating this as production-ready, review these points:
-
-1. **Parent gene check:** `Breed.GetMorphedGene` currently checks `motherHasGene` twice in the condition intended to detect when neither parent has the gene. The second check likely should be `fatherHasGene`.
-2. **Gene registration:** `Gene.RegisteredGeneTypes` is populated by the base constructor and `Register<T>()`. Ensure concrete gene definitions are initialized before breeding so all expected types are registered.
-3. **`EyeColor.Genes`:** this static array is declared but not initialized in the supplied file.
-4. **Species initialization:** the species constructor and collection loader are stubs, so `HasGene`, `IsGenePure`, and `GetRandomGene` will not return useful results until `_genePools` is populated.
-5. **Default ranges:** `new Range()` produces the default value of the struct (`Min = 0`, `Max = 0`), not a configured species stat range.
-6. **Duplicate gene types:** `Unit.InjectGene` does not replace an existing gene of the same type; `OverrideGene` does.
-7. **Namespace and folder consistency:** `Unit` is in a folder named `New Folder` but declares no namespace. Consider moving it into a domain folder and applying consistent namespaces.
-8. **Spelling and naming:** consider correcting `GenderDisrtibution` to `GenderDistribution` and `Reprodution` to `Reproduction` before these names become part of a larger API.
-
-## Requirements
-
-- Unity project with the UnityEngine API available.
-- C# language/runtime support for the syntax used by the project (including target-typed `new()` and pattern matching).
-- Unity's `UnityEngine.Random` and `UnityEngine.ColorUtility` APIs.
-
 ## Documentation
 
 - [Architecture and data flow](docs/ARCHITECTURE.md)
